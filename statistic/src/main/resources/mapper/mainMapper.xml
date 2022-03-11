@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kps.dao.MainDao">
+
+<!-- Query Start -->
+	<select id="getMemberYn" resultType="com.kps.vo.MemberVO">
+		SELECT 
+			A.MEMBER_CODE
+			, A.MEMBER_NAME
+			, B.CLIENT_CODE
+			, (SELECT CLIENT_NAME
+				FROM CLIENT
+				WHERE CLIENT_CODE = B.CLIENT_CODE) AS CLIENT_NAME
+			, A.AUTHORITY_LEVEL
+			, A.PARTNER_ID
+			, A.PARTNER_PW
+			, A.PHONE_NO
+		FROM 
+			MEMBER A
+			INNER JOIN 
+				CLIENT_MEMBER B
+					ON A.MEMBER_CODE = B.MEMBER_CODE
+		WHERE 
+				A.PARTNER_ID = #{partnerId}
+		  AND	A.PARTNER_PW = #{partnerPw}
+	</select>
+</mapper>
